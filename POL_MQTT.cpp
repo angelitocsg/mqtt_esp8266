@@ -35,3 +35,20 @@ void POL_MQTT::reconnect() {
     }
   }
 }
+
+void POL_MQTT::sendMessage(char* message) {
+  checkConnection();
+  if (clientMQTT.connected()) {
+    clientMQTT.publish(mqttPublishID, message);
+  }
+}
+
+String POL_MQTT::getPayloadText(byte* payload, unsigned int length) {
+  String payloadText;
+  for (int i = 0; i < length; i++)
+  {
+    char c = (char)payload[i];
+    payloadText += c;
+  }
+  return payloadText;
+}

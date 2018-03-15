@@ -7,10 +7,12 @@ POL_WiFiConnect::POL_WiFiConnect() { }
 void POL_WiFiConnect::connect()
 {
   WiFi.begin(wifiSSID, wifiPass);
+  Serial.println("Try to connect to wireless network...");
   while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
     delay(500);
-    Serial.println("Try to connect to wireless network...");
   }
+  Serial.println();
   ip = WiFi.localIP();
 }
 

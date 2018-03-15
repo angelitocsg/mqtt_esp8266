@@ -1,5 +1,3 @@
-#include <ESP8266WiFi.h>
-#include <PubSubClient.h>
 #include "POL_WiFiConnect.h"
 #include "POL_MQTT.h"
 #include "POL_Config.h"
@@ -22,11 +20,22 @@ void loop() {
 }
 
 void mqtt_callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
+  Serial.print("Message arrived ["); Serial.print(topic); Serial.print("] ");
+  String payloadText = myMqtt.getPayloadText(payload, length);
   Serial.println();
+
+  if (payloadText == "A1")
+  {
+    Serial.println("Ação A1 ativada");
+    myMqtt.sendMessage("Recebido ação A1");
+  }
+  else if (payloadText == "A2")
+  {
+    Serial.println("Ação A2 ativada");
+    myMqtt.sendMessage("Recebido ação A2");
+  }
+  else
+  {
+    myMqtt.sendMessage("Recebido mensagem desconhecida.");
+  }
 }
